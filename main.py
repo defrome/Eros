@@ -1,11 +1,12 @@
-import asyncio
-
-import aiosqlite
 import requests
 
-from config import DB_URL
-import db.database
 from bs4 import BeautifulSoup
+
+from db.database import db_func
+
+# создаем бд для информации о пользователе
+db_func()
+
 
 # стартовое сообщение
 def print_banner(script_name, description=""):
