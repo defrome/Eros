@@ -23,11 +23,11 @@ res = requests.get('https://fragment.com/gifts')
 html_content = res.text
 links_data = []
 
+
 class GiftCharacteristics:
     def __init__(self, collection_name, model):
         self.collection_name = collection_name
         self.model = model
-
 
 
 def find_gift_by_name():
@@ -45,12 +45,10 @@ def find_gift_by_name():
                 'full_url': f"https://fragment.com{href}"
             }
 
-
-            print(f"{link_info['full_url']}")
             links_data.append(link_info)
 
-    collection_name = input("Введите название коллекции подарка: ")
-    model = input("Введите интересующая вас модель: ")
+    collection_name = "witchhat" #input("Введите название коллекции подарка: ")
+    model = "" #input("Введите интересующая вас модель: ")
 
     gift = GiftCharacteristics(collection_name, model)
 
@@ -60,14 +58,20 @@ def find_gift_by_name():
         for link_info in links_data:
             if (gift.collection_name.lower() in link_info['text'].lower() or
                     gift.collection_name.lower() in link_info['href'].lower()):
+
                 found_links.append(link_info)
+                print(found_links)
 
         if found_links:
-            print(f"Найдено {len(found_links)} ссылок для '{gift.collection_name}':")
-            for link in found_links:
-                print(f"   - {link['text']} -> {link['full_url']}")
-        else:
-            print(f"Ссылки с названием '{gift.collection_name}' не найдены")
+
+            finder_link = []
+
+            link_res = found_links[0]
+            finder_link.append(link_res['full_url'])
+            print(finder_link)
+
+        #else:
+            #print(f"Ссылки с названием '{gift.collection_name}' не найдены")
 
 
 
