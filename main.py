@@ -60,7 +60,6 @@ def find_gift_by_name():
                     gift.collection_name.lower() in link_info['href'].lower()):
 
                 found_links.append(link_info)
-                print(found_links)
 
         if found_links:
 
@@ -68,14 +67,11 @@ def find_gift_by_name():
 
             link_res = found_links[0]
             finder_link.append(link_res['full_url'])
-            print(finder_link)
 
-        #else:
-            #print(f"Ссылки с названием '{gift.collection_name}' не найдены")
-
+        else:
+            print(f"Ссылки с названием '{gift.collection_name}' не найдены")
 
 
-    print(gift.collection_name, gift.model)
 
 
 find_gift_by_name()
