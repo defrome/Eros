@@ -10,10 +10,9 @@ async def create_database():
                                   status BOOLEAN)
                                   """)
 
-            await cursor.execute("""CREATE TABLE IF NOT EXISTS gift_info
+            await cursor.execute("""CREATE TABLE IF NOT EXISTS gifts_links
                                               (id INTEGER PRIMARY KEY AUTOINCREMENT,  
-                                              name TEXT, 
-                                              status BOOLEAN)
+                                              link TEXT)
                                               """)
 
             await con.commit()
