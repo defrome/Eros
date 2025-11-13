@@ -9,7 +9,7 @@ db_func()
 
 
 # стартовое сообщение
-def print_banner(script_name, description=""):
+def print_banner(script_name, description="") -> str:
     print("\n" + "="*50)
     print(f"{script_name}")
     print("="*50)

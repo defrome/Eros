@@ -18,7 +18,6 @@ async def db_func():
                 "INSERT INTO user_info (value, status) VALUES (?, ?)",
                 user_data
             )
-            print(f"Пользователь добавлен! ID: {cursor.lastrowid}")
 
     except sqlite3.Error as e:
         print(f"Ошибка базы данных: {e}")
