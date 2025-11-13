@@ -46,14 +46,31 @@ def find_gift_by_name():
             }
 
 
-            print(f"Ссылка: {link_info['full_url']}")
-            print(f"Текст: {link_info['text']}")
+            print(f"{link_info['full_url']}")
             links_data.append(link_info)
 
     collection_name = input("Введите название коллекции подарка: ")
     model = input("Введите интересующая вас модель: ")
 
     gift = GiftCharacteristics(collection_name, model)
+
+    found_links = []
+
+    if gift.collection_name:
+        for link_info in links_data:
+            if (gift.collection_name.lower() in link_info['text'].lower() or
+                    gift.collection_name.lower() in link_info['href'].lower()):
+                found_links.append(link_info)
+
+        if found_links:
+            print(f"Найдено {len(found_links)} ссылок для '{gift.collection_name}':")
+            for link in found_links:
+                print(f"   - {link['text']} -> {link['full_url']}")
+        else:
+            print(f"Ссылки с названием '{gift.collection_name}' не найдены")
+
+
+
     print(gift.collection_name, gift.model)
 
 
