@@ -1,8 +1,11 @@
 import asyncio
+
+import aiosqlite
 import requests
-from db.database import create_database
+
+from config import DB_URL
+import db.database
 from bs4 import BeautifulSoup
-asyncio.run(create_database())
 
 # стартовое сообщение
 def print_banner(script_name, description=""):
@@ -13,6 +16,7 @@ def print_banner(script_name, description=""):
         print(f"{description}")
     print("Скрипт успешно запущен!")
     print("="*50 + "\n")
+
 
 print_banner(
     "Eros tracker",
@@ -47,8 +51,8 @@ def find_gift_by_name():
 
             links_data.append(link_info)
 
-    collection_name = "witchhat" #input("Введите название коллекции подарка: ")
-    model = "" #input("Введите интересующая вас модель: ")
+    collection_name = input("Введите название коллекции подарка: ")
+    model = input("Введите интересующая вас модель: ")
 
     gift = GiftCharacteristics(collection_name, model)
 
@@ -56,6 +60,7 @@ def find_gift_by_name():
 
     if gift.collection_name:
         for link_info in links_data:
+
             if (gift.collection_name.lower() in link_info['text'].lower() or
                     gift.collection_name.lower() in link_info['href'].lower()):
 
@@ -70,8 +75,6 @@ def find_gift_by_name():
 
         else:
             print(f"Ссылки с названием '{gift.collection_name}' не найдены")
-
-
 
 
 find_gift_by_name()

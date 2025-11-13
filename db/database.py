@@ -1,19 +1,13 @@
-import aiosqlite
+import sqlite3
 
-async def create_database():
-    async with aiosqlite.connect("osnova.db") as con:
-        async with con.cursor() as cursor:
+from config import DB_URL
 
-            await cursor.execute("""CREATE TABLE IF NOT EXISTS user_info
-                                  (id INTEGER PRIMARY KEY AUTOINCREMENT,  
-                                  nickname TEXT, 
-                                  status BOOLEAN)
-                                  """)
+con = sqlite3.connect(f"{DB_URL}")
+cursor = con.cursor()
 
-            await cursor.execute("""CREATE TABLE IF NOT EXISTS gifts_links
-                                              (id INTEGER PRIMARY KEY AUTOINCREMENT,  
-                                              link TEXT)
-                                              """)
-
-            await con.commit()
-        print("Таблица создана успешно!")
+cursor.execute("""CREATE TABLE user_info
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,  
+                value INTEGER, 
+                status BOOL)
+            """)
+print("Таблицы созданы.")
