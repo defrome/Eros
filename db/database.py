@@ -2,7 +2,7 @@ import sqlite3
 
 from config import DB_URL
 
-async def db_func():
+def db_func():
     try:
         with sqlite3.connect(f"{DB_URL}") as conn:
             cursor = conn.cursor()
