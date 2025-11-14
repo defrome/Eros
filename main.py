@@ -27,11 +27,12 @@ print_banner(
 
 try:
     res = requests.get('https://fragment.com/gifts')
-    res.raise_for_status()  # Проверяем статус ответа
+    res.raise_for_status()
     html_content = res.text
 except requests.RequestException as e:
     print(f"Ошибка при получении страницы: {e}")
     html_content = ""
+
 
 links_data = []
 
