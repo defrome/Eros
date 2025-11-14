@@ -33,9 +33,9 @@ links_data = []
 
 
 class GiftCharacteristics:
-    def __init__(self, collection_name, model):
+    def __init__(self, collection_name, model_id):
         self.collection_name = collection_name
-        self.model = model
+        self.model_id = model_id
 
 
 def find_gift_by_name():
@@ -56,9 +56,9 @@ def find_gift_by_name():
             links_data.append(link_info)
 
     collection_name = input("Введите название коллекции подарка: ")
-    model = input("Введите интересующая вас модель: ")
+    model_id = input("Введите интересующая вас модель: ")
 
-    gift = GiftCharacteristics(collection_name, model)
+    gift = GiftCharacteristics(collection_name, model_id)
 
     found_links = []
 
@@ -100,20 +100,33 @@ def find_gift_by_name():
                     }
 
                     gifts_data.append(gift_info)
-                    print(gift_info)
 
-            try:
-                with sqlite3.connect(f"{DB_URL}") as conn:
-                    cursor = conn.cursor()
+            print(gifts_data)
 
-                    cursor.execute("UPDATE user_info SET value = value + 1")
-                    conn.commit()
+            # поиск подарка по id
 
-            except sqlite3.Error as e:
-                print(f"Ошибка базы данных: {e}")
+            user_current_gift = []
+
+            for gift in gifts_data:
+                if f'-{model_id}' in gift['href']:
+                    user_current_gift.append(gift)
+                    print("Найден подарок:", gift)
+
+            print(user_current_gift)
+
 
         else:
             print(f"Ссылки с названием '{gift.collection_name}' не найдены")
+
+        try:
+            with sqlite3.connect(f"{DB_URL}") as conn:
+                cursor = conn.cursor()
+
+                cursor.execute("UPDATE user_info SET value = value + 1")
+                conn.commit()
+
+        except sqlite3.Error as e:
+            print(f"Ошибка базы данных: {e}")
 
 
 find_gift_by_name()
