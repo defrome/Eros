@@ -87,7 +87,7 @@ def find_gift_by_name():
             try:
                 with sqlite3.connect(DB_URL) as conn:
                     cursor = conn.cursor()
-                    cursor.execute(f"UPDATE user_info SET last_gift = {user_model_url}")
+                    cursor.execute("UPDATE user_info SET last_gift = ?", (user_model_url,))
                     conn.commit()
 
             except sqlite3.Error as e:

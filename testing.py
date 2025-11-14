@@ -25,7 +25,7 @@ def get_all_gift_links_selenium(collection_name):
         last_link_count = 0
         same_count_attempts = 0
 
-        while same_count_attempts < 5:
+        while same_count_attempts < 2:
 
             grid = driver.find_element(By.CLASS_NAME, 'js-autoscroll-body')
 
@@ -37,11 +37,12 @@ def get_all_gift_links_selenium(collection_name):
             links = grid.find_elements(By.TAG_NAME, 'a')
             current_count = len(links)
 
-            print(f"Найдено ссылок в grid: {current_count}")
+            print(f"Найдено подарков: {current_count}")
 
             if current_count == last_link_count:
                 same_count_attempts += 1
-                print(f"Новых ссылок нет ({same_count_attempts}/5)")
+                print(f"Попытка поиска новых подарков ({same_count_attempts}/2)")
+
             else:
                 same_count_attempts = 0
                 last_link_count = current_count
