@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from config import DB_URL
 from db.database import db_func
-from testing import get_all_gift_links_selenium, user_all_links
+from driver_script import get_all_gift_links_selenium, user_all_links
 
 # создаем бд для информации о пользователе
 db_func()
