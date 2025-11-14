@@ -1,15 +1,11 @@
 import sqlite3
-
 import requests
-
 from bs4 import BeautifulSoup
-
 from config import DB_URL
 from db.database import db_func
 
 # создаем бд для информации о пользователе
 db_func()
-
 
 # стартовое сообщение
 def print_banner(script_name, description="") -> str:
@@ -21,7 +17,6 @@ def print_banner(script_name, description="") -> str:
     print("Скрипт успешно запущен!")
     print("="*50 + "\n")
 
-
 print_banner(
     "Eros tracker",
     "Telegram nft gifts tracker"
@@ -31,12 +26,10 @@ res = requests.get('https://fragment.com/gifts')
 html_content = res.text
 links_data = []
 
-
 class GiftCharacteristics:
     def __init__(self, collection_name, model_id):
         self.collection_name = collection_name
         self.model_id = model_id
-
 
 def find_gift_by_name():
     parser = BeautifulSoup(html_content, 'html.parser')
@@ -52,68 +45,70 @@ def find_gift_by_name():
                 'text': text,
                 'full_url': f"https://fragment.com{href}"
             }
-
             links_data.append(link_info)
 
-    collection_name = input("Введите название коллекции подарка: ")
-    model_id = input("Введите интересующая вас модель: ")
+    collection_name = "happybrownie"
+    model_id = 93011
 
     gift = GiftCharacteristics(collection_name, model_id)
-
     found_links = []
 
     if gift.collection_name:
         for link_info in links_data:
-
             if (gift.collection_name.lower() in link_info['text'].lower() or
                     gift.collection_name.lower() in link_info['href'].lower()):
-
                 found_links.append(link_info)
 
         if found_links:
-
             finder_link = found_links[0]['full_url']
             print(f"Найдена ссылка: {finder_link}")
 
-            gifts_res = requests.get(finder_link)
+            finder_link_with_filter = f"{finder_link}?filter=sale"
+
+            gifts_res = requests.get(finder_link_with_filter)
             html_content_gifts = gifts_res.text
+
+            with open('debug_no_filter.html', 'w', encoding='utf-8') as f:
+                f.write(html_content_gifts)
 
             parser_gifts = BeautifulSoup(html_content_gifts, 'html.parser')
             gifts = parser_gifts.find_all('a')
 
+
             gifts_data = []
 
             for gift_link in gifts:
+                print(gift_link)
+                #href = gift_link.get('href')
+                #text = gift_link.get_text(strip=True)
 
-                href = gift_link.get('href')
-                text = gift_link.get_text(strip=True)
+                #if (href and href != '#' and
+                        #href.startswith('/gift/') and
+                        #'-' in href and
+                        #href.split('-')[-1].isdigit()):
 
-                if (href and href != '#' and
-                        href.startswith('/gift/') and
-                        '-' in href and
-                        href.split('-')[-1].isdigit()):
+                    #gift_info = {
+                        #'href': href,
+                        #'text': text,
+                        #'full_url': f"https://fragment.com{href}"
+                    #}
 
-                    gift_info = {
-                        'href': href,
-                        'text': text,
-                        'full_url': f"https://fragment.com{href}"
-                    }
+                    #gifts_data.append(gift_info)
 
-                    gifts_data.append(gift_info)
+            #print(f"Найдено подарков: {len(gifts_data)}")
 
-            print(gifts_data)
+            #print(gifts_data)
+
 
             # поиск подарка по id
-
             user_current_gift = []
 
             for gift in gifts_data:
                 if f'-{model_id}' in gift['href']:
-                    user_current_gift.append(gift)
-                    print("Найден подарок:", gift)
+                    user_current_gift.append(gift['href'])
+                    print("Найден подарок:", gift['href'])
 
-            print(user_current_gift)
-
+            print("Список ссылок:", user_current_gift)
 
         else:
             print(f"Ссылки с названием '{gift.collection_name}' не найдены")
@@ -121,12 +116,10 @@ def find_gift_by_name():
         try:
             with sqlite3.connect(f"{DB_URL}") as conn:
                 cursor = conn.cursor()
-
                 cursor.execute("UPDATE user_info SET value = value + 1")
                 conn.commit()
 
         except sqlite3.Error as e:
             print(f"Ошибка базы данных: {e}")
-
 
 find_gift_by_name()
