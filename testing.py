@@ -11,12 +11,14 @@ user_all_links = []
 
 def get_all_gift_links_selenium(collection_name):
     driver = webdriver.Chrome()
+    driver.set_window_size(150, 150)
+
     url = f"https://fragment.com/gifts/{collection_name}?filter=sale"
 
     driver.get(url)
 
     try:
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 3).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'js-autoscroll-body'))
         )
 

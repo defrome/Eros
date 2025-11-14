@@ -78,14 +78,24 @@ def find_gift_by_name():
 
         user_model_url = f"https://fragment.com/gift/{collection_name}-{model_id}?filter=sale"
 
+        current_link = []
+
         if user_model_url in user_all_links:
 
-            current_link =
-            print("ТАКАЯ МОДЕЛЬ ЕСТЬ В СПИСКЕ")
+            current_link.append(user_model_url)
+
+            try:
+                with sqlite3.connect(DB_URL) as conn:
+                    cursor = conn.cursor()
+                    cursor.execute(f"UPDATE user_info SET last_gift = {user_model_url}")
+                    conn.commit()
+
+            except sqlite3.Error as e:
+                print(f"Ошибка базы данных: {e}")
 
         else:
 
-            print("ТАКОЙ МОДЕЛИ НЕТ")
+            print("Ссылка не найдена.")
 
     try:
         with sqlite3.connect(DB_URL) as conn:

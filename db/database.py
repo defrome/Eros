@@ -10,12 +10,13 @@ def db_func():
             cursor.execute("""CREATE TABLE user_info
                             (id INTEGER PRIMARY KEY AUTOINCREMENT,  
                             value INTEGER, 
-                            status BOOL)
+                            status BOOL,
+                            last_gift TEXT)
                         """)
 
-            user_data = (0, True)
+            user_data = (0, True, "zero")
             cursor.execute(
-                "INSERT INTO user_info (value, status) VALUES (?, ?)",
+                "INSERT INTO user_info (value, status, last_gift) VALUES (?, ?, ?)",
                 user_data
             )
 
