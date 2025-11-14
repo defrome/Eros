@@ -6,12 +6,14 @@ from selenium.common.exceptions import TimeoutException
 import time
 
 
+user_all_links = []
+
+
 def get_all_gift_links_selenium(collection_name):
     driver = webdriver.Chrome()
     url = f"https://fragment.com/gifts/{collection_name}?filter=sale"
 
     driver.get(url)
-    all_links = []
 
     try:
         WebDriverWait(driver, 10).until(
@@ -27,7 +29,7 @@ def get_all_gift_links_selenium(collection_name):
 
 
             driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", grid)
-            time.sleep(2)
+            time.sleep(1)
 
 
             links = grid.find_elements(By.TAG_NAME, 'a')
@@ -44,10 +46,8 @@ def get_all_gift_links_selenium(collection_name):
 
             for link in links:
                 href = link.get_attribute('href')
-                if href and href not in all_links:
-                    all_links.append(href)
-
-            print(f"Уникальных ссылок: {len(all_links)}")
+                if href and href not in user_all_links:
+                    user_all_links.append(href)
 
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)
@@ -56,10 +56,3 @@ def get_all_gift_links_selenium(collection_name):
         print("Таймаут ожидания grid контейнера")
     finally:
         driver.quit()
-
-    return all_links
-
-links = get_all_gift_links_selenium("happybrownie")
-print(f"Всего найдено ссылок: {len(links)}")
-for link in links:
-    print(link)
